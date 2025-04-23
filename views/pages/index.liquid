@@ -1,0 +1,14 @@
+{% layout 'main' %}
+
+{% block content%}
+{% include 'cart' %}
+{% include 'product' %}
+{% include 'faqs' %}
+{% include 'contact' %}
+{% endblock%}
+
+{% block customJS%}
+<script src="js/products.js"></script>
+<script src="js/faqs.js"></script>
+<script src="js/contact.js"></script>
+{% endblock%}
