@@ -1,14 +1,20 @@
 {% layout 'main' %}
 
 {% block content%}
-{% include 'cart' %}
+{% include 'countdown' %}
 {% include 'product' %}
+{% include 'cart' %}
+{% include 'hero' %}
+{% include 'showcase' %}
 {% include 'faqs' %}
 {% include 'contact' %}
 {% endblock%}
 
 {% block customJS%}
 <script src="js/products.js"></script>
+<script src="js/countdown.js"></script>
+<script src="js/slider.js"></script>
+<script src="js/featured.js"></script>
 <script src="js/faqs.js"></script>
 <script src="js/contact.js"></script>
 {% endblock%}
