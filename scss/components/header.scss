@@ -243,5 +243,14 @@
                 display: none;
             }
         }
+
+        &--theme {
+            font-size: 1.5rem;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: var(--text-color);
+            transition: color 0.3s;
+        }
     }
 }

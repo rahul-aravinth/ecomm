@@ -4,7 +4,7 @@ const slideItems = [{
     },
     {
         img: 'img/slider-2.jpeg',
-        content: 'Discover new glasses for summer!'
+        content: 'Discover new arrivals for summer!'
     },
     {
         img: 'img/slider-3.jpeg',

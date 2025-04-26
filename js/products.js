@@ -1,7 +1,7 @@
 fetch('data/products.json')
     .then(response => response.json())
     .then(json => {
-        productsDOM.products = JSON.parse(json).map(product => {
+        productsDOM.products = json.map(product => {
             return new Product(product)
         })
         productsDOM.showProducts()
@@ -11,15 +11,15 @@ fetch('data/products.json')
 fetch('data/categories.json')
     .then(response => response.json())
     .then(json => {
-        productsDOM.categories = JSON.parse(json).map(name => {
+        productsDOM.categories = json.map(name => {
             return new Category(name)
         })
         productsDOM.showCategoryButtons()
     })
 
-const formatter = new Intl.NumberFormat('en-US', {
+const formatter = new Intl.NumberFormat('en-IN', {
     style: 'currency',
-    currency: 'USD',
+    currency: 'INR',
     minimumFractionDigits: 0,
 })
 
@@ -103,32 +103,74 @@ class ProductsDOM {
     // show all products
     showProducts() {
         let productsHTML = this.products.map(product => {
-            return `<div class="product__item js-productItem" data-id="${product.id}">
-            <img class="product__item__image" src="${product.img}" alt="${product.title}">
-            <div class="product__item__detail">
-                <div class="product__item__detail__title">${product.title}</div>
-                <div class="product__item__detail__desc">${product.desc}</div>
-                <div class="product__item__detail__price js-productItemPrice">${product.formatedPrice()}</div>
-            </div>
-            <button class="button button--primary js-productItemButton" type="button" aria-label="Add to Cart">Add to Cart</button>
-        </div>`
+            return `
+            <div class="product__item js-productItem" data-id="${product.id}">
+                <div class="product__carousel js-productCarousel">
+                    ${product.img.map((image, index) => `
+                        <img src="${image}" class="product__carousel__image${index === 0 ? ' is-active' : ''}" alt="${product.title}">
+                    `).join('')}
+                    <button class="product__carousel__prev js-carouselPrev" aria-label="Previous Image">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M15 18l-6-6 6-6"/>
+                        </svg>
+                    </button>
+                    <button class="product__carousel__next js-carouselNext" aria-label="Next Image">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M9 6l6 6-6 6"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="product__item__detail">
+                    <div class="product__item__detail__title">${product.title}</div>
+                    <div class="product__item__detail__desc">${product.desc}</div>
+                    <div class="product__item__detail__price js-productItemPrice">${product.formatedPrice()}</div>
+                </div>
+                <button class="button button--primary js-productItemButton" type="button" aria-label="Add to Cart">Add to Cart</button>
+            </div>`;
         }).join('')
+    
+        this.productContainerEl.innerHTML = productsHTML;
+    
+        this.setCarouselEvents();
+        this.setProductButtonEvents();
+    }
 
-        this.productContainerEl.innerHTML = productsHTML
+    setCarouselEvents() {
+        const carousels = document.querySelectorAll('.js-productCarousel');
+    
+        carousels.forEach(carousel => {
+            const images = carousel.querySelectorAll('.product__carousel__image');
+            const prevButton = carousel.querySelector('.js-carouselPrev');
+            const nextButton = carousel.querySelector('.js-carouselNext');
+    
+            let currentIndex = 0;
+    
+            prevButton.addEventListener('click', () => {
+                images[currentIndex].classList.remove('is-active');
+                currentIndex = (currentIndex - 1 + images.length) % images.length;
+                images[currentIndex].classList.add('is-active');
+            });
+    
+            nextButton.addEventListener('click', () => {
+                images[currentIndex].classList.remove('is-active');
+                currentIndex = (currentIndex + 1) % images.length;
+                images[currentIndex].classList.add('is-active');
+            });
+        });
+    }
 
-        // access each product's button
-        const productButtonEls = this.productContainerEl.querySelectorAll('.js-productItemButton')
+    setProductButtonEvents() {
+        const productButtonEls = this.productContainerEl.querySelectorAll('.js-productItemButton');
+        
         productButtonEls.forEach(productButtonEl => {
-            // access parentElement to understand which product('s button) is clicked. This is also needed to show/hide product for other situations.
-            const productEl = productButtonEl.parentElement
-
-            // find the product in the array and clicked. 
-            const product = this.products.find(product => product.id == productEl.dataset.id)
-
-            //Match the product in JS and HTML
-            product.domEl = new ProductDOM(product, productEl, productButtonEl)
-            product.domEl.setClickEvent()
-        })
+            // Access parentElement to understand which product's button is clicked
+            const productEl = productButtonEl.closest('.js-productItem'); // safer than parentElement
+            const product = this.products.find(product => product.id == productEl.dataset.id);
+    
+            // Match the product in JS and HTML
+            product.domEl = new ProductDOM(product, productEl, productButtonEl);
+            product.domEl.setClickEvent();
+        });
     }
 }
 

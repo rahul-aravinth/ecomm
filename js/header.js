@@ -14,16 +14,16 @@ let navItemsList = [{
         title: 'products',
         link: 'products',
         dropdownItems: [{
-                title: 'sunglasses',
-                link: 'sunglasses',
+                title: 'mens',
+                link: 'mens',
             },
             {
-                title: 'trousers',
-                link: 'trousers',
+                title: 'womens',
+                link: 'womens',
             },
             {
-                title: 'necklace',
-                link: 'necklace',
+                title: 'kids',
+                link: 'kids',
             }
         ]
     },
