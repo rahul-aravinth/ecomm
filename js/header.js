@@ -4,11 +4,9 @@ const header = document.querySelector('.js-header')
 headerButtonMenu.addEventListener('click', () => header.classList.toggle('is-show'))
 
 const headerButtonCart = document.querySelector('.js-headerButtonCart')
-const cartCloseButton = document.querySelector('.js-cartCloseButton')
 const headerCart = document.querySelector('.js-cart')
 
-headerButtonCart.addEventListener('click', () => headerCart.classList.add('is-show'))
-cartCloseButton.addEventListener('click', () => headerCart.classList.remove('is-show'))
+headerButtonCart.addEventListener('click', () => headerCart.classList.toggle('is-show'))
 
 let navItemsList = [{
         title: 'products',

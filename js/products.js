@@ -311,10 +311,11 @@ class CartDOM {
 
     showCartProducts() {
         this.cartProductContainerEl.innerHTML = this.cart.products.map(product => {
+            const imageUrl = Array.isArray(product.img) ? product.img[0] : product.img;
             return `<div class="cart__product js-cartProduct" data-id="${product.id}">
             <div class="cart__product-top-wrapper">
                     <figure>
-                        <img src="${product.img}" alt="Product Image" class="cart__product__image">
+                        <img src="${imageUrl}" alt="Product Image" class="cart__product__image">
                     </figure>
                     <div class="cart__product__content">
                     <div class="cart__product__content__title">${product.title}</div>
